@@ -1,0 +1,23 @@
+version: '3'
+services:
+    jupyterlab:
+        build: .
+        ports:
+        - "8888:8888"
+        volumes:
+        - "/your_user/:/root"
+        restart: always
+    mongo:
+        image: mongo
+        restart: always
+        command:
+        - "--auth"
+        ports:
+        - "27017:27017"
+        volumes:
+        - "path to mongo data on your machine :/data/db"
+        environment:
+        - "MONGO_INITDB_ROOT_USERNAME=root"
+        - "MONGO_INITDB_ROOT_PASSWORD=root"
+        - "MONGO_INITDB_DATABASE=initial_database"
+
