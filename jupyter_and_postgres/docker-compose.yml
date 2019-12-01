@@ -5,17 +5,17 @@ services:
         ports:
         - "8888:8888"
         volumes:
-        - "Location to location on host machine :/root"
+        - "location on host machine:/root"
         restart: always
-	container_name: jupyterlab
+        container_name: jupyterlab
     postgres:
-        image: postgres
+        image: postgres:latest
         restart: always
         container_name: postgres
         ports:
         - "5432:5432"
         volumes:
-        - "Volume to map postgres on host machine:/var/lib/postgresql/data"
+        - "location on host machine:/var/lib/postgresql/data"
         environment:
         - "POSTGRES_USER=root"
         - "POSTGRES_PASSWORD=change_me"
