@@ -1,0 +1,30 @@
+# Start from a core stack version
+FROM jupyter/scipy-notebook:latest
+
+# Install in the default python3 environment
+RUN conda config --append channels conda-forge
+
+RUN pip install --quiet --no-cache-dir 'flake8==3.9.2' && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+# Install xgboost
+RUN conda install --quiet --yes libgcc-ng && \
+    conda clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+RUN pip install --quiet --no-cache-dir xgboost && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+# Install the Dask dashboard
+RUN pip install --quiet --no-cache-dir dask-labextension && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+# Dask Scheduler & Bokeh ports
+EXPOSE 8787
+EXPOSE 8786
+
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--port=8888", "--NotebookApp.token='secret_stuff'"]
